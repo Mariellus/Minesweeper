@@ -24,8 +24,11 @@ namespace WpfApp1
         public MainWindow()
         {
             InitializeComponent();
-            GameWindow gameWindow = new GameWindow(16, 16, 40);
-            gameWindow.ShowDialog();
+
+            DataContext = new MainViewModel();
+            //GameWindow gameWindow = new GameWindow(16, 16, 40);
+            //gameWindow.ShowDialog();
+
         }
     }
 }

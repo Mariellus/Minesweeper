@@ -81,6 +81,7 @@ namespace WpfApp1
 
             // fit the window size to the size of the RootGrid
             this.SizeToContent = SizeToContent.WidthAndHeight;
+            
         }
     }
 }

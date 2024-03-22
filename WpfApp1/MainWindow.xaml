@@ -22,9 +22,9 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <Button Grid.Row="0" Grid.Column="0">Leicht</Button>
-        <Button Grid.Row="0" Grid.Column="1">Mittel</Button>
-        <Button Grid.Row="0" Grid.Column="2">Schwer</Button>
+        <Button Grid.Row="0" Grid.Column="0" Command="{Binding EasyGame}">Leicht</Button>
+        <Button Grid.Row="0" Grid.Column="1" Command="{Binding MiddleGame}">Mittel</Button>
+        <Button Grid.Row="0" Grid.Column="2" Command="{Binding HardGame}">Schwer</Button>
         <Button Grid.Row="1" Grid.Column="1" Command="{Binding Close}">Schließen</Button>
     </Grid>
 </Window>
