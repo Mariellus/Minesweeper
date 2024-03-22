@@ -10,17 +10,7 @@ namespace WpfApp1.Commands
 {
     public class MainHardGame:ICommand
     {
-        private MainViewModel viewModel;
-        public MainHardGame(MainViewModel mainViewModel)
-        {
-            this.viewModel = mainViewModel;
-        }
-
-        public event EventHandler? CanExecuteChanged
-        {
-            add { CommandManager.RequerySuggested += value; }
-            remove { CommandManager.RequerySuggested -= value; }
-        }
+        public event EventHandler? CanExecuteChanged;
 
         public bool CanExecute(object? parameter)
         {
@@ -32,5 +22,6 @@ namespace WpfApp1.Commands
             GameWindow gameWindow = new GameWindow(30, 16, 99);
             gameWindow.ShowDialog();
         }
+
     }
 }

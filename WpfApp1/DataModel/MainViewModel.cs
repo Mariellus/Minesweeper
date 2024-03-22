@@ -9,9 +9,9 @@ public class MainViewModel : INotifyPropertyChanged {
     public MainViewModel()
     {
         Close = new MainClose(this);
-        EasyGame = new MainEasyGame(this);
+        EasyGame = new MainEasyGame();
         MiddleGame = new MainMiddleGame(this);
-        HardGame = new MainHardGame(this);
+        HardGame = new MainHardGame();
         
     }
     public MainClose Close { get; set; }
