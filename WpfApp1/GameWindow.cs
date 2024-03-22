@@ -85,7 +85,7 @@ namespace WpfApp1
         {
             if (sender is Button)
             {
-                Button button = (Button) sender;
+                Button button = (Button)sender;
                 if (button.Content is string && (string)button.Content == "🚩") return;
                 var coords = button.Name.Replace("Button", "").Split("Z");
                 var x = int.Parse(coords[0]);
@@ -96,21 +96,24 @@ namespace WpfApp1
                     if (gameOver)
                     {
                         button.Content = "💣";
-                    } else
+                    }
+                    else
                     {
                         button.Content = "💥";
                     }
                     if (!gameOver)
                     {
                         gameOver = true;
-                        foreach (var item in buttons) {
+                        foreach (var item in buttons)
+                        {
                             if (item.Content == null)
                             {
                                 ButtonLeftClick(item, e);
                             }
                         }
                     }
-                } else
+                }
+                else
                 {
                     var minesCount = GetSurroundingMines(x, y);
                     button.Content = minesCount;
@@ -131,10 +134,11 @@ namespace WpfApp1
             if (sender is Button)
             {
                 Button button = (Button)sender;
-                if (button.Content is string && (string) button.Content == "🚩")
+                if (button.Content is string && (string)button.Content == "🚩")
                 {
                     button.Content = null;
-                } else if (button.Content == null)
+                }
+                else if (button.Content == null)
                 {
                     button.Content = "🚩";
                 }
@@ -166,36 +170,41 @@ namespace WpfApp1
             //Check above
             if (x > 0 && !mines[x - 1, y] && buttons[x - 1, y].Content is not 0)
             {
-                if (GetSurroundingMines(x - 1, y) == 0)
+                var surroundingMines = GetSurroundingMines(x - 1, y);
+                buttons[x - 1, y].Content = surroundingMines;
+                if (surroundingMines == 0)
                 {
-                    buttons[x - 1, y].Content = 0;
                     ClearSurrounding0Fields(x - 1, y);
                 }
+
             }
             //Check below
             if (x < mines.GetLength(0) - 1 && !mines[x + 1, y] && buttons[x + 1, y].Content is not 0)
             {
-                if (GetSurroundingMines(x + 1, y) == 0)
+                var surroundingMines = GetSurroundingMines(x + 1, y);
+                buttons[x + 1, y].Content = surroundingMines;
+                if (surroundingMines == 0)
                 {
-                    buttons[x + 1, y].Content = 0;
                     ClearSurrounding0Fields(x + 1, y);
                 }
             }
             //Check right
             if (y < mines.GetLength(1) - 1 && !mines[x, y + 1] && buttons[x, y + 1].Content is not 0)
             {
-                if (GetSurroundingMines(x, y + 1) == 0)
+                var surroundingMines = GetSurroundingMines(x, y + 1);
+                buttons[x, y + 1].Content = surroundingMines;
+                if (surroundingMines == 0)
                 {
-                    buttons[x, y + 1].Content = 0;
                     ClearSurrounding0Fields(x, y + 1);
                 }
             }
             //Check left
             if (y > 0 && !mines[x, y - 1] && buttons[x, y - 1].Content is not 0)
             {
-                if (GetSurroundingMines(x, y - 1) == 0)
+                var surroundingMines = GetSurroundingMines(x, y - 1);
+                buttons[x, y - 1].Content = surroundingMines;
+                if (surroundingMines == 0)
                 {
-                    buttons[x, y - 1].Content = 0;
                     ClearSurrounding0Fields(x, y - 1);
                 }
             }
