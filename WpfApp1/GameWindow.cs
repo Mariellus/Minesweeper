@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Windows.Controls;
 using System.Windows;
+using System.Windows.Input;
 using WpfApp1.Command;
+using WpfApp1.Commands;
 using WpfApp1.DataModel;
 
 namespace WpfApp1
 {
     public class GameWindow : Window
     {
-        public Grid RootGrid { get; private set; }
+        public Grid RootGrid { get; }
         private GameViewModel _gameViewModel;
 
         public GameWindow()
@@ -27,8 +29,18 @@ namespace WpfApp1
                 for (int j = 0; j < 16; j++)
                 {
                     Button button = new Button() { Name = "Button" + i + "Z" + j, MinHeight = 30, MinWidth = 30 };
-                    button.Command = new GameButtonLeftClicked(button, _gameViewModel);
-                    button.MouseRightButtonDown += ButtonRightClick;
+                    MouseBinding lefClick = new MouseBinding
+                    {
+                        MouseAction = MouseAction.LeftClick,
+                        Command = new GameButtonLeftClicked(button, _gameViewModel)
+                    };
+                    button.InputBindings.Add(lefClick);
+                    MouseBinding rightClick = new MouseBinding
+                    {
+                        MouseAction = MouseAction.RightClick,
+                        Command = new GameButtonRightClicked(button)
+                    };
+                    button.InputBindings.Add(rightClick);
                     _gameViewModel.Game.Buttons[i, j] = button;
                     Grid.SetRow(button, i);
                     Grid.SetColumn(button, j);
@@ -66,22 +78,5 @@ namespace WpfApp1
             // fit the window size to the size of the RootGrid
             this.SizeToContent = SizeToContent.WidthAndHeight;
         }
-
-        private void ButtonRightClick(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button)
-            {
-                Button button = (Button)sender;
-                if (button.Content is string && (string)button.Content == "🚩")
-                {
-                    button.Content = null;
-                }
-                else if (button.Content == null)
-                {
-                    button.Content = "🚩";
-                }
-            }
-        }
-
     }
 }
