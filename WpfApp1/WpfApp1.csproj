@@ -7,4 +7,9 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Convertes\" />
+    <Folder Include="ValidationRules\" />
+  </ItemGroup>
+
 </Project>
