@@ -1,27 +1,32 @@
 using System;
+using System.Net.NetworkInformation;
 using System.Windows.Controls;
 
 namespace WpfApp1.DataModel;
 
 public class Game {
-    bool[,] mines = new bool[16, 16];
+    bool[,] mines;
     private Random random = new Random();
     private bool gameOver = false;
     private int numOfRevealedTiles = 0;
-    public Button[,] Buttons {get; private set;} = new Button[16, 16];
+    private int _fieldsRequiredToWin;
+    public Button[,] Buttons {get; private set;}
     
-    public Game()
+    public Game(int gameWidth, int gameHeight, int numberOfMines)
     {
-        for (int i = 0; i < 40; i++)
+        Buttons = new Button[gameWidth, gameHeight];
+        mines = new bool[gameWidth,gameHeight];
+        for (int i = 0; i < numberOfMines; i++)
         {
-            int x = random.Next(0, 16);
-            int y = random.Next(0, 16);
+            int x = random.Next(0, gameWidth);
+            int y = random.Next(0, gameHeight);
             while (mines[x, y])
             {
-                x = random.Next(0, 16);
-                y = random.Next(0, 16);
+                x = random.Next(0, gameWidth);
+                y = random.Next(0, gameHeight);
             }
             mines[x, y] = true;
+            _fieldsRequiredToWin = gameWidth * gameHeight - numberOfMines;
         }
     }
     
@@ -54,7 +59,7 @@ public class Game {
             {
                 ClearSurrounding0Fields(x, y);
             }
-            if (++numOfRevealedTiles == 16 * 16 - 40)
+            if (++numOfRevealedTiles == _fieldsRequiredToWin)
             {
                 button.Content = "You win";
             }

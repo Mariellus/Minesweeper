@@ -13,22 +13,26 @@ namespace WpfApp1
         public Grid RootGrid { get; }
         private GameViewModel _gameViewModel;
 
-        public GameWindow()
+        public GameWindow(int gameWidth, int gameHeight, int numberOfMines)
         {
             RootGrid = new Grid();
-            _gameViewModel = new();
+            _gameViewModel = new(gameWidth, gameHeight, numberOfMines);
 
-            for (int i = 0; i < 16; i++)
+            for (int i = 0; i < gameWidth; i++)
             {
-                this.RootGrid.RowDefinitions.Add(new RowDefinition());
                 this.RootGrid.ColumnDefinitions.Add(new ColumnDefinition());
             }
 
-            for (int i = 0; i < 16; i++)
+            for (int i = 0; i < gameHeight; i++)
             {
-                for (int j = 0; j < 16; j++)
+                this.RootGrid.RowDefinitions.Add(new RowDefinition());
+            }
+
+            for (int x = 0; x < gameWidth; x++)
+            {
+                for (int y = 0; y < gameHeight; y++)
                 {
-                    Button button = new Button() { Name = "Button" + i + "Z" + j, MinHeight = 30, MinWidth = 30 };
+                    Button button = new Button() { Name = "Button" + x + "Z" + y, MinHeight = 30, MinWidth = 30 };
                     MouseBinding lefClick = new MouseBinding
                     {
                         MouseAction = MouseAction.LeftClick,
@@ -41,9 +45,9 @@ namespace WpfApp1
                         Command = new GameButtonRightClicked(button)
                     };
                     button.InputBindings.Add(rightClick);
-                    _gameViewModel.Game.Buttons[i, j] = button;
-                    Grid.SetRow(button, i);
-                    Grid.SetColumn(button, j);
+                    _gameViewModel.Game.Buttons[x, y] = button;
+                    Grid.SetColumn(button, x);
+                    Grid.SetRow(button, y);
                     RootGrid.Children.Add(button);
                 }
             }
