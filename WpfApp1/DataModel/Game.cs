@@ -54,10 +54,13 @@ public class Game {
         else
         {
             var minesCount = GetSurroundingMines(x, y);
-            button.Content = minesCount;
             if (minesCount == 0)
             {
                 ClearSurrounding0Fields(x, y);
+            }
+            else
+            {
+                button.Content = minesCount;
             }
             if (++numOfRevealedTiles == _fieldsRequiredToWin)
             {
@@ -88,45 +91,24 @@ public class Game {
     
     private void ClearSurrounding0Fields(int x, int y)
     {
-        //Check above
-        if (x > 0 && !mines[x - 1, y] && Buttons[x - 1, y].Content is not 0)
+        for (int i = -1; i < 2; i++)
         {
-            var surroundingMines = GetSurroundingMines(x - 1, y);
-            Buttons[x - 1, y].Content = surroundingMines;
-            if (surroundingMines == 0)
+            for (int j = -1; j < 2; j++)
             {
-                ClearSurrounding0Fields(x - 1, y);
-            }
-
-        }
-        //Check below
-        if (x < mines.GetLength(0) - 1 && !mines[x + 1, y] && Buttons[x + 1, y].Content is not 0)
-        {
-            var surroundingMines = GetSurroundingMines(x + 1, y);
-            Buttons[x + 1, y].Content = surroundingMines;
-            if (surroundingMines == 0)
-            {
-                ClearSurrounding0Fields(x + 1, y);
-            }
-        }
-        //Check right
-        if (y < mines.GetLength(1) - 1 && !mines[x, y + 1] && Buttons[x, y + 1].Content is not 0)
-        {
-            var surroundingMines = GetSurroundingMines(x, y + 1);
-            Buttons[x, y + 1].Content = surroundingMines;
-            if (surroundingMines == 0)
-            {
-                ClearSurrounding0Fields(x, y + 1);
-            }
-        }
-        //Check left
-        if (y > 0 && !mines[x, y - 1] && Buttons[x, y - 1].Content is not 0)
-        {
-            var surroundingMines = GetSurroundingMines(x, y - 1);
-            Buttons[x, y - 1].Content = surroundingMines;
-            if (surroundingMines == 0)
-            {
-                ClearSurrounding0Fields(x, y - 1);
+                try
+                {
+                    Button button = Buttons[x + i, y + j];
+                    var surroundingMines = GetSurroundingMines(x + i, y + j);
+                    if (button.Content is null)
+                    {
+                        button.Content = surroundingMines;
+                        if (surroundingMines == 0)
+                        {
+                            ClearSurrounding0Fields(x+i, y+j);
+                        }
+                    }
+                }
+                catch {}
             }
         }
     }
