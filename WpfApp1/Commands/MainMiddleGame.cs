@@ -10,17 +10,7 @@ namespace WpfApp1.Commands
 {
     public class MainMiddleGame : ICommand
     {
-        private MainViewModel viewModel;
-        public MainMiddleGame(MainViewModel mainViewModel)
-        {
-            this.viewModel = mainViewModel;
-        }
-
-        public event EventHandler? CanExecuteChanged
-        {
-            add { CommandManager.RequerySuggested += value; }
-            remove { CommandManager.RequerySuggested -= value; }
-        }
+        public event EventHandler? CanExecuteChanged;
 
         public bool CanExecute(object? parameter)
         {

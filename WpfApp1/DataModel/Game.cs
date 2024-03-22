@@ -61,8 +61,9 @@ public class Game {
             else
             {
                 button.Content = minesCount;
+                numOfRevealedTiles++;
             }
-            if (++numOfRevealedTiles == _fieldsRequiredToWin)
+            if (numOfRevealedTiles == _fieldsRequiredToWin && !gameOver)
             {
                 button.Content = "You win";
             }
@@ -102,6 +103,7 @@ public class Game {
                     if (button.Content is null)
                     {
                         button.Content = surroundingMines;
+                        numOfRevealedTiles++;
                         if (surroundingMines == 0)
                         {
                             ClearSurrounding0Fields(x+i, y+j);
