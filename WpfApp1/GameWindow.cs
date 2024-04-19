@@ -1,6 +1,7 @@
 ﻿using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using WpfApp1.Command;
 using WpfApp1.Commands;
 using WpfApp1.DataModel;
@@ -9,21 +10,71 @@ namespace WpfApp1;
 
 public class GameWindow : Window
 {
+    public Grid GameGrid { get; }
     public Grid RootGrid { get; }
+    public Grid TopBarGrid { get; }
 
     public GameWindow(int gameWidth, int gameHeight, int numberOfMines)
     {
-        RootGrid = new Grid();
-        GameViewModel gameViewModel = new(gameWidth, gameHeight, numberOfMines);
+        RootGrid = new Grid
+        {
+            RowDefinitions =
+            {
+                new RowDefinition(),
+                new RowDefinition()
+            }
+        };
+
+        TopBarGrid = new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(),
+                new ColumnDefinition(),
+                new ColumnDefinition()
+            },
+        };
+
+        Grid.SetRow(TopBarGrid, 0);
+        RootGrid.Children.Add(TopBarGrid);
+
+        Thickness topElementMargin = new Thickness();
+        topElementMargin.Bottom = 5;
+        topElementMargin.Left = 5;
+        topElementMargin.Right = 5;
+        topElementMargin.Top = 5;
+
+        TextBlock time = new TextBlock
+        {
+            Margin = topElementMargin,
+            FontSize = 14,
+            Foreground = Brushes.Red,
+            FontFamily = new FontFamily("DSEG7 Modern"),
+        };
+        TopBarGrid.Children.Add(time);
+
+        TextBlock remainingMines = new TextBlock
+        {
+            Margin = topElementMargin,
+            FontSize = 14,
+            Foreground = Brushes.Red,
+            FontFamily = new FontFamily("DSEG7 Modern"),
+            Text = numberOfMines.ToString()
+        };
+        Grid.SetColumn(remainingMines, 2);
+        TopBarGrid.Children.Add(remainingMines);
+
+        GameGrid = new Grid();
+        GameViewModel gameViewModel = new(gameWidth, gameHeight, numberOfMines, time);
 
         for (int i = 0; i < gameWidth; i++)
         {
-            RootGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            GameGrid.ColumnDefinitions.Add(new ColumnDefinition());
         }
 
         for (int i = 0; i < gameHeight; i++)
         {
-            RootGrid.RowDefinitions.Add(new RowDefinition());
+            GameGrid.RowDefinitions.Add(new RowDefinition());
         }
 
         for (int x = 0; x < gameWidth; x++)
@@ -40,16 +91,18 @@ public class GameWindow : Window
                 MouseBinding rightClick = new MouseBinding
                 {
                     MouseAction = MouseAction.RightClick,
-                    Command = new GameButtonRightClicked(button)
+                    Command = new GameButtonRightClicked(button, remainingMines)
                 };
                 button.InputBindings.Add(rightClick);
                 gameViewModel.Game.Buttons[x, y] = button;
                 Grid.SetColumn(button, x);
                 Grid.SetRow(button, y);
-                RootGrid.Children.Add(button);
+                GameGrid.Children.Add(button);
             }
         }
 
+        Grid.SetRow(GameGrid, 1);
+        RootGrid.Children.Add(GameGrid);
         // Add the RootGrid to the content of the window
         Content = RootGrid;
 

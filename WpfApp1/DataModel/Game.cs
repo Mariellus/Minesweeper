@@ -10,7 +10,7 @@ public class Game {
     private bool gameOver = false;
     private int numOfRevealedTiles = 0;
     private int _fieldsRequiredToWin;
-    public Button[,] Buttons {get; private set;}
+    public Button[,] Buttons {get;}
     
     public Game(int gameWidth, int gameHeight, int numberOfMines)
     {
